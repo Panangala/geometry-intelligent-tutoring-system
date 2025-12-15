@@ -24,7 +24,7 @@ LEVELS = {
         'questions_required': 5,
         'pass_threshold': 0.6,  # 60% to pass
         'color': '#10b981',
-        'icon': '🌱'
+        
     },
     'intermediate': {
         'name': 'Intermediate', 
@@ -32,7 +32,7 @@ LEVELS = {
         'questions_required': 5,
         'pass_threshold': 0.7,  # 70% to pass
         'color': '#f59e0b',
-        'icon': '🌿'
+        
     },
     'expert': {
         'name': 'Expert',
@@ -40,7 +40,7 @@ LEVELS = {
         'questions_required': 5,
         'pass_threshold': 0.8,  # 80% to pass
         'color': '#8b5cf6',
-        'icon': '🌳'
+       
     }
 }
 
@@ -705,3 +705,4 @@ if __name__ == '__main__':
     logger.info("Starting Geometry ITS with Level System")
 
     app.run(host='127.0.0.1', port=5000, debug=True)
+
