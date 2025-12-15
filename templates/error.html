@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Error - Geometry ITS{% endblock %}
+
+{% block content %}
+<section class="error-section">
+    <div class="error-container">
+        <h1>Error</h1>
+        <p class="error-message">{{ error }}</p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Return to Home</a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,574 @@
+{% extends "base.html" %}
+
+{% block title %}Select a Shape - Geometry ITS{% endblock %}
+
+{% block content %}
+<section class="select-section">
+    
+    <!-- Hero Section - Full Width -->
+    <div class="hero-section">
+        <div class="hero-inner">
+            <div class="tutor-character">
+                <div class="tutor-glow"></div>
+                <div class="tutor-body">
+                    <div class="tutor-face">
+                        <div class="eye left"></div>
+                        <div class="eye right"></div>
+                        <div class="smile"></div>
+                    </div>
+                </div>
+                <div class="wave-hand">👋</div>
+            </div>
+            <div class="hero-text">
+                <h1>Welcome to Geometry Learning!</h1>
+                <p>Hi! I'm <strong>Geo</strong>, your geometry tutor. Pick a shape below to start learning about area calculations.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        <div class="section-header">
+            <span class="header-icon">🎯</span>
+            <h2>Choose a Shape to Learn</h2>
+        </div>
+
+        <!-- Shape Cards Grid - Full Width -->
+        <div class="shapes-grid">
+            {% for shape in shapes %}
+            <div class="shape-card {{ shape }}">
+                <div class="card-accent"></div>
+                <div class="card-body">
+                    <div class="shape-visual">
+                        {% if shape == 'square' %}
+                        <div class="shape-icon square-shape"></div>
+                        {% elif shape == 'rectangle' %}
+                        <div class="shape-icon rectangle-shape"></div>
+                        {% elif shape == 'triangle' %}
+                        <div class="shape-icon triangle-shape"></div>
+                        {% elif shape == 'circle' %}
+                        <div class="shape-icon circle-shape"></div>
+                        {% endif %}
+                    </div>
+                    <h3>{{ shape|capitalize }}</h3>
+                    <div class="formula-tag">
+                        {% if shape == 'square' %}A = s²
+                        {% elif shape == 'rectangle' %}A = l × w
+                        {% elif shape == 'triangle' %}A = ½bh
+                        {% elif shape == 'circle' %}A = πr²
+                        {% endif %}
+                    </div>
+                    <p class="shape-desc">
+                        {% if shape == 'square' %}4 equal sides, 4 right angles
+                        {% elif shape == 'rectangle' %}2 pairs of equal sides
+                        {% elif shape == 'triangle' %}3 sides, half of rectangle
+                        {% elif shape == 'circle' %}Uses π (pi) and radius
+                        {% endif %}
+                    </p>
+                    <div class="card-buttons">
+                        <a href="{{ url_for('learn', shape_name=shape) }}" class="btn btn-outline">
+                            📖 Learn
+                        </a>
+                        <a href="{{ url_for('practice', shape_name=shape) }}" class="btn btn-primary">
+                            Practice →
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Tips Section - Full Width -->
+        <div class="tips-section">
+            <h3>💡 Quick Tips for Success</h3>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">📖</div>
+                    <div class="tip-content">
+                        <strong>Learn First</strong>
+                        <p>Watch the animations to understand how formulas work</p>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">✏️</div>
+                    <div class="tip-content">
+                        <strong>Practice</strong>
+                        <p>Answer questions to test and reinforce your knowledge</p>
+                    </div>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon">💡</div>
+                    <div class="tip-content">
+                        <strong>Use Hints</strong>
+                        <p>Stuck on a problem? Click the hint button for help</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Link -->
+        <div class="bottom-cta">
+            <a href="{{ url_for('results') }}" class="btn btn-ghost">
+                📊 View My Progress
+            </a>
+        </div>
+    </div>
+</section>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+.select-section {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #4f46e5 0%, #6366f1 100%);
+}
+
+/* Hero Section - Full Width Banner */
+.hero-section {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    padding: 2.5rem 2rem;
+    color: white;
+}
+
+.hero-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.tutor-character {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.tutor-glow {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.8; }
+}
+
+.tutor-body {
+    width: 90px;
+    height: 110px;
+    background: linear-gradient(180deg, #818cf8 0%, #6366f1 100%);
+    border-radius: 45px 45px 28px 28px;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    border: 3px solid rgba(255,255,255,0.3);
+}
+
+.tutor-face {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(180deg, #fef3c7 0%, #fde68a 100%);
+    border-radius: 50%;
+    box-shadow: inset 0 -4px 15px rgba(0,0,0,0.1);
+}
+
+.eye {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #1e293b;
+    border-radius: 50%;
+    top: 20px;
+    animation: blink 3s ease-in-out infinite;
+}
+
+.eye.left { left: 15px; }
+.eye.right { right: 15px; }
+
+@keyframes blink {
+    0%, 90%, 100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.1); }
+}
+
+.smile {
+    position: absolute;
+    width: 20px;
+    height: 10px;
+    border: 3px solid #1e293b;
+    border-top: none;
+    border-radius: 0 0 20px 20px;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.wave-hand {
+    position: absolute;
+    right: -18px;
+    bottom: 25px;
+    font-size: 2rem;
+    animation: wave 0.8s ease-in-out infinite;
+    transform-origin: bottom center;
+}
+
+@keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(20deg); }
+    75% { transform: rotate(-10deg); }
+}
+
+.hero-text {
+    text-align: center;
+}
+
+.hero-text h1 {
+    margin: 0 0 0.75rem;
+    font-size: 2.25rem;
+    font-weight: 700;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.hero-text p {
+    margin: 0;
+    font-size: 1.1rem;
+    opacity: 0.95;
+    max-width: 500px;
+    line-height: 1.6;
+}
+
+.hero-text strong {
+    color: #fde68a;
+}
+
+/* Main Content Area */
+.main-content {
+    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+    padding: 2.5rem 2rem 3rem;
+    min-height: calc(100vh - 200px);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+.header-icon {
+    font-size: 1.75rem;
+}
+
+.section-header h2 {
+    margin: 0;
+    font-size: 1.75rem;
+    color: #1e293b;
+}
+
+/* Shapes Grid - FULL WIDTH, proper alignment */
+.shapes-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto 3rem;
+    padding: 0 1rem;
+}
+
+/* 2 columns for medium screens */
+@media (max-width: 1200px) {
+    .shapes-grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 800px;
+    }
+}
+
+/* 1 column for mobile */
+@media (max-width: 600px) {
+    .shapes-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+    }
+}
+
+/* Shape Cards */
+.shape-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.shape-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+}
+
+.card-accent {
+    height: 6px;
+}
+
+.shape-card.square .card-accent { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+.shape-card.rectangle .card-accent { background: linear-gradient(90deg, #10b981, #34d399); }
+.shape-card.triangle .card-accent { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.shape-card.circle .card-accent { background: linear-gradient(90deg, #ec4899, #f472b6); }
+
+.card-body {
+    padding: 2rem 1.5rem;
+    text-align: center;
+}
+
+.shape-visual {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+}
+
+.shape-icon {
+    transition: transform 0.3s ease;
+}
+
+.shape-card:hover .shape-icon {
+    transform: scale(1.15) rotate(5deg);
+}
+
+.square-shape {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(59,130,246,0.4);
+}
+
+.rectangle-shape {
+    width: 90px;
+    height: 58px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(16,185,129,0.4);
+}
+
+.triangle-shape {
+    width: 0;
+    height: 0;
+    border-left: 45px solid transparent;
+    border-right: 45px solid transparent;
+    border-bottom: 78px solid #f59e0b;
+    filter: drop-shadow(0 10px 20px rgba(245,158,11,0.45));
+}
+
+.circle-shape {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+    border-radius: 50%;
+    box-shadow: 0 10px 30px rgba(236,72,153,0.4);
+}
+
+.card-body h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
+    color: #1e293b;
+}
+
+.formula-tag {
+    display: inline-block;
+    padding: 0.4rem 1.25rem;
+    background: #f1f5f9;
+    border-radius: 25px;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #6366f1;
+    margin-bottom: 0.75rem;
+}
+
+.shape-desc {
+    margin: 0 0 1.5rem;
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.card-buttons {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.card-buttons .btn {
+    flex: 1;
+    padding: 0.875rem 1rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-outline {
+    background: #f8fafc;
+    color: #475569;
+    border: 2px solid #e2e8f0;
+}
+
+.btn-outline:hover {
+    background: #e2e8f0;
+    border-color: #cbd5e1;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: white;
+    box-shadow: 0 4px 15px rgba(99,102,241,0.35);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99,102,241,0.45);
+}
+
+/* Tips Section */
+.tips-section {
+    max-width: 1200px;
+    margin: 0 auto 2.5rem;
+    padding: 0 1rem;
+}
+
+.tips-section h3 {
+    text-align: center;
+    margin: 0 0 1.5rem;
+    font-size: 1.25rem;
+    color: #1e293b;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+}
+
+@media (max-width: 800px) {
+    .tips-grid {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+}
+
+.tip-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+.tip-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.tip-content strong {
+    display: block;
+    color: #1e293b;
+    margin-bottom: 0.35rem;
+    font-size: 1.05rem;
+}
+
+.tip-content p {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Bottom CTA */
+.bottom-cta {
+    text-align: center;
+}
+
+.btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: white;
+    color: #6366f1;
+    border: 2px solid #6366f1;
+    border-radius: 14px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.btn-ghost:hover {
+    background: #6366f1;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99,102,241,0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .hero-text h1 {
+        font-size: 1.75rem;
+    }
+    
+    .hero-text p {
+        font-size: 1rem;
+    }
+    
+    .main-content {
+        padding: 2rem 1rem;
+    }
+    
+    .section-header h2 {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .hero-section {
+        padding: 1.5rem 1rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem 1rem;
+    }
+    
+    .card-buttons {
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}

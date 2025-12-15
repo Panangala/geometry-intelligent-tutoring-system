@@ -1,0 +1,744 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - Geometry ITS{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    
+    <!-- Hero Header - Full Width -->
+    <div class="hero-banner">
+        <div class="hero-banner-inner">
+            <div class="tutor-welcome">
+                <div class="tutor-character" id="tutor-character">
+                    <div class="tutor-body">
+                        <div class="tutor-face">
+                            <div class="eyes">
+                                <div class="eye left"><div class="pupil"></div></div>
+                                <div class="eye right"><div class="pupil"></div></div>
+                            </div>
+                            <div class="mouth"></div>
+                        </div>
+                        <div class="tutor-hands">
+                            <div class="hand left"></div>
+                            <div class="hand right waving"></div>
+                        </div>
+                    </div>
+                    <div class="tutor-shadow"></div>
+                </div>
+                
+                <div class="welcome-speech">
+                    <h1>Hi! I'm <span class="tutor-name">Geo</span> 👋</h1>
+                    <p class="welcome-message">{{ ai_tutor.message if ai_tutor else "I'm your geometry tutor! Let's learn how to calculate areas of different shapes together." }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content - Full Width with centered content -->
+    <div class="main-content">
+        
+        <!-- Hero Content -->
+        <div class="hero-content-section">
+            <h2>Learn Geometry the Fun Way!</h2>
+            <p class="hero-subtitle">Master area calculations for 2D shapes through interactive lessons and adaptive practice</p>
+
+            <!-- Features Grid -->
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📐</div>
+                    <h3>4 Shapes to Master</h3>
+                    <p>Square, Rectangle, Triangle, and Circle</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3>3 Difficulty Levels</h3>
+                    <p>Beginner → Intermediate → Expert</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI Tutor Guide</h3>
+                    <p>Get personalized feedback and encouragement</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Track Progress</h3>
+                    <p>See your improvement in real-time</p>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="cta-section">
+                <a href="{{ url_for('start') }}" class="btn btn-primary btn-xl">
+                    🚀 Start Learning
+                </a>
+                <p class="cta-hint">No account needed • Learn at your own pace</p>
+            </div>
+        </div>
+
+        <!-- How It Works -->
+        <div class="how-it-works">
+            <h2>How It Works</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Pick a Shape</div>
+                    <div class="step-desc">Choose from Square, Rectangle, Triangle, or Circle</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Learn with Animations</div>
+                    <div class="step-desc">Watch visual demonstrations of how area formulas work</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Practice & Master</div>
+                    <div class="step-desc">Answer questions at your level and progress through challenges</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Track Your Growth</div>
+                    <div class="step-desc">View detailed progress and celebrate your achievements</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Benefits Section -->
+        <div class="benefits-section">
+            <h2>Why Learn with Geo?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">✨</div>
+                    <h3>Interactive Learning</h3>
+                    <p>Animated visuals make geometry concepts easy to understand and remember</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎯</div>
+                    <h3>Adaptive Difficulty</h3>
+                    <p>Questions adjust to your skill level, keeping you challenged but not frustrated</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">💪</div>
+                    <h3>Instant Feedback</h3>
+                    <p>Get immediate responses from Geo to help you understand mistakes</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🏆</div>
+                    <h3>Achievement Badges</h3>
+                    <p>Unlock levels and earn badges as you progress through the system</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Button at Bottom -->
+        <div class="bottom-cta">
+            <a href="{{ url_for('start') }}" class="btn btn-primary btn-large">
+                Begin Your Geometry Journey
+            </a>
+        </div>
+    </div>
+
+    <!-- Floating Shapes Background -->
+    <div class="shapes-preview">
+        <div class="preview-shape square"></div>
+        <div class="preview-shape rectangle"></div>
+        <div class="preview-shape triangle"></div>
+        <div class="preview-shape circle"></div>
+    </div>
+</section>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+.hero-section {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #4f46e5 0%, #7c3aed 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* ========== HERO BANNER - FULL WIDTH ========== */
+.hero-banner {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    padding: 2.5rem 2rem;
+    color: white;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-banner-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tutor Welcome */
+.tutor-welcome {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.tutor-character {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.tutor-body {
+    width: 100px;
+    height: 120px;
+    background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
+    border-radius: 50px 50px 35px 35px;
+    position: relative;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.tutor-face {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 65px;
+    height: 65px;
+    background: #fef3c7;
+    border-radius: 50%;
+}
+
+.eyes {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding-top: 18px;
+}
+
+.eye {
+    width: 14px;
+    height: 14px;
+    background: white;
+    border-radius: 50%;
+    position: relative;
+    transition: transform 0.1s ease;
+}
+
+.pupil {
+    width: 7px;
+    height: 7px;
+    background: #1e293b;
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    animation: look 4s ease-in-out infinite;
+}
+
+@keyframes look {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(2px, 0); }
+    50% { transform: translate(0, 2px); }
+    75% { transform: translate(-2px, 0); }
+}
+
+.mouth {
+    width: 25px;
+    height: 12px;
+    background: #1e293b;
+    border-radius: 0 0 15px 15px;
+    margin: 10px auto 0;
+}
+
+.tutor-hands {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+}
+
+.hand {
+    width: 18px;
+    height: 18px;
+    background: #fef3c7;
+    border-radius: 50%;
+}
+
+.hand.waving {
+    animation: wave 0.8s ease-in-out infinite;
+    transform-origin: bottom center;
+}
+
+@keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(25deg); }
+}
+
+.tutor-shadow {
+    width: 70px;
+    height: 12px;
+    background: radial-gradient(ellipse, rgba(0,0,0,0.2) 0%, transparent 70%);
+    margin: 8px auto 0;
+}
+
+.welcome-speech {
+    background: white;
+    padding: 1.5rem 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    max-width: 400px;
+    position: relative;
+    text-align: left;
+}
+
+.welcome-speech::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 40px;
+    border: 12px solid transparent;
+    border-right-color: white;
+}
+
+.welcome-speech h1 {
+    margin: 0 0 0.5rem;
+    color: #1e293b;
+    font-size: 1.75rem;
+}
+
+.tutor-name {
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.welcome-message {
+    margin: 0;
+    color: #475569;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* ========== MAIN CONTENT - FULL WIDTH ========== */
+.main-content {
+    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+    padding: 3rem 2rem;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-content-section {
+    max-width: 1200px;
+    margin: 0 auto 3rem;
+    text-align: center;
+}
+
+.hero-content-section h2 {
+    color: #1e293b;
+    font-size: 2.5rem;
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+}
+
+.hero-subtitle {
+    color: #64748b;
+    font-size: 1.2rem;
+    margin: 0 0 2.5rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ========== FEATURES GRID ========== */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.feature-card {
+    background: white;
+    padding: 1.75rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    background: white;
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.feature-card h3 {
+    color: #1e293b;
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+}
+
+.feature-card p {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ========== CTA SECTION ========== */
+.cta-section {
+    margin-top: 2rem;
+}
+
+.cta-hint {
+    color: #94a3b8;
+    font-size: 0.95rem;
+    margin-top: 0.75rem;
+}
+
+/* ========== HOW IT WORKS ========== */
+.how-it-works {
+    max-width: 1200px;
+    margin: 3rem auto;
+    text-align: center;
+}
+
+.how-it-works h2 {
+    color: #1e293b;
+    font-size: 2rem;
+    margin: 0 0 2rem;
+    font-weight: 700;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.75rem;
+    margin-bottom: 3rem;
+}
+
+.step-card {
+    background: white;
+    padding: 2rem 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.step-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 auto 1rem;
+}
+
+.step-title {
+    color: #1e293b;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+}
+
+.step-desc {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ========== BENEFITS SECTION ========== */
+.benefits-section {
+    max-width: 1200px;
+    margin: 3rem auto;
+    text-align: center;
+    background: white;
+    padding: 2.5rem;
+    border-radius: 24px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+.benefits-section h2 {
+    color: #1e293b;
+    font-size: 2rem;
+    margin: 0 0 2rem;
+    font-weight: 700;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+}
+
+.benefit-card {
+    text-align: center;
+    padding: 1.5rem 0;
+}
+
+.benefit-icon {
+    font-size: 2.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.benefit-card h3 {
+    color: #1e293b;
+    font-size: 1.15rem;
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+}
+
+.benefit-card p {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* ========== BOTTOM CTA ========== */
+.bottom-cta {
+    text-align: center;
+    margin: 3rem auto 0;
+    max-width: 1200px;
+}
+
+/* ========== BUTTONS ========== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: white;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+}
+
+.btn-xl {
+    padding: 1.25rem 3rem;
+    font-size: 1.2rem;
+}
+
+.btn-large {
+    padding: 1.1rem 2.5rem;
+    font-size: 1.05rem;
+}
+
+/* ========== SHAPES PREVIEW ========== */
+.shapes-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.preview-shape {
+    position: absolute;
+    opacity: 0.08;
+    animation: drift 20s linear infinite;
+}
+
+.preview-shape.square {
+    width: 80px;
+    height: 80px;
+    background: white;
+    top: 5%;
+    left: 5%;
+    animation-delay: 0s;
+}
+
+.preview-shape.rectangle {
+    width: 100px;
+    height: 50px;
+    background: white;
+    top: 60%;
+    right: 10%;
+    animation-delay: -5s;
+}
+
+.preview-shape.triangle {
+    width: 0;
+    height: 0;
+    border-left: 40px solid transparent;
+    border-right: 40px solid transparent;
+    border-bottom: 70px solid white;
+    top: 15%;
+    right: 15%;
+    animation-delay: -10s;
+}
+
+.preview-shape.circle {
+    width: 60px;
+    height: 60px;
+    background: white;
+    border-radius: 50%;
+    bottom: 20%;
+    left: 8%;
+    animation-delay: -15s;
+}
+
+@keyframes drift {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-40px) rotate(180deg); }
+    100% { transform: translateY(0) rotate(360deg); }
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+    .hero-content-section h2 {
+        font-size: 2rem;
+    }
+    
+    .benefits-section {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-banner {
+        padding: 1.5rem 1rem;
+    }
+
+    .hero-banner-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .welcome-speech::before {
+        display: none;
+    }
+    
+    .welcome-speech {
+        text-align: center;
+        max-width: 100%;
+    }
+    
+    .tutor-welcome {
+        gap: 1.5rem;
+    }
+    
+    .hero-content-section h2 {
+        font-size: 1.75rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .how-it-works h2,
+    .benefits-section h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .main-content {
+        padding: 2rem 1rem;
+    }
+    
+    .hero-content-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .features-grid,
+    .steps-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .tutor-character {
+        width: 80px;
+    }
+    
+    .tutor-body {
+        width: 80px;
+        height: 100px;
+    }
+    
+    .btn-xl {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+    }
+}
+</style>
+
+<script>
+// Make tutor's eyes follow cursor
+document.addEventListener('mousemove', function(e) {
+    const pupils = document.querySelectorAll('.pupil');
+    pupils.forEach(pupil => {
+        const eye = pupil.parentElement;
+        const rect = eye.getBoundingClientRect();
+        const eyeCenterX = rect.left + rect.width / 2;
+        const eyeCenterY = rect.top + rect.height / 2;
+        
+        const angle = Math.atan2(e.clientY - eyeCenterY, e.clientX - eyeCenterX);
+        const distance = 2;
+        
+        const x = Math.cos(angle) * distance;
+        const y = Math.sin(angle) * distance;
+        
+        pupil.style.transform = `translate(${x}px, ${y}px)`;
+    });
+});
+</script>
+{% endblock %}

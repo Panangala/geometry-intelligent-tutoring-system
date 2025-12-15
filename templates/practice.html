@@ -1,0 +1,681 @@
+{% extends "base.html" %}
+
+{% block title %}Practice {{ shape|capitalize }} - Geometry ITS{% endblock %}
+
+{% block content %}
+<section class="practice-section">
+    
+    <!-- Header Strip -->
+    <div class="header-strip {{ shape }}">
+        <div class="header-inner">
+            <div class="shape-badge">{{ shape|capitalize }}</div>
+            <h1>Practice Mode</h1>
+            <a href="{{ url_for('learn', shape_name=shape) }}" class="review-btn">
+                📖 Review Formula
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        <!-- Two Column Layout -->
+        <div class="practice-grid">
+            
+            <!-- Left: Question -->
+            <div class="question-panel">
+                
+                <!-- Tutor -->
+                <div class="tutor-bar">
+                    <div class="tutor-avatar" id="tutor-avatar">
+                        <div class="tutor-face">
+                            <div class="eye left"></div>
+                            <div class="eye right"></div>
+                            <div class="mouth" id="mouth"></div>
+                        </div>
+                    </div>
+                    <div class="tutor-msg" id="tutor-message">
+                        Let's practice <strong>{{ shape }}</strong> area! Calculate the area of the shape shown below.
+                    </div>
+                </div>
+
+                <!-- Question Card -->
+                <div class="question-card">
+                    <div class="q-label">Question</div>
+                    <p class="q-text">{{ question.problem }}</p>
+                    
+                    <div class="shape-display">
+                        {% if shape == 'square' %}
+                        <div class="vis-square">
+                            <span class="dim">{{ "%.1f"|format(question.given.side) }} cm</span>
+                        </div>
+                        {% elif shape == 'rectangle' %}
+                        <div class="vis-rectangle">
+                            <span class="dim top">{{ "%.1f"|format(question.given.length) }} cm</span>
+                            <span class="dim side">{{ "%.1f"|format(question.given.width) }} cm</span>
+                        </div>
+                        {% elif shape == 'triangle' %}
+                        <div class="vis-triangle-wrap">
+                            <div class="vis-triangle"></div>
+                            <span class="dim base">b = {{ "%.1f"|format(question.given.base) }} cm</span>
+                            <span class="dim height">h = {{ "%.1f"|format(question.given.height) }} cm</span>
+                        </div>
+                        {% elif shape == 'circle' %}
+                        <div class="vis-circle">
+                            <div class="radius-mark"></div>
+                            <span class="dim bottom">r = {{ "%.1f"|format(question.given.radius) }} cm</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Answer -->
+            <div class="answer-panel">
+                
+                <div class="answer-card">
+                    <label>Your Answer</label>
+                    <div class="input-row">
+                        <input type="number" id="answer" step="0.01" placeholder="Enter area..." autofocus>
+                        <span class="unit">cm²</span>
+                    </div>
+                    
+                    <div class="hint-box" id="hint-box">
+                        <span class="hint-icon">💡</span>
+                        <div>
+                            <strong>Hint:</strong>
+                            {% if shape == 'square' %}Area = side × side
+                            {% elif shape == 'rectangle' %}Area = length × width
+                            {% elif shape == 'triangle' %}Area = ½ × base × height
+                            {% elif shape == 'circle' %}Area = π × radius² (π ≈ 3.14159)
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="btn-row">
+                        <button id="submit-btn" class="btn btn-primary btn-large">✓ Check Answer</button>
+                        <button id="hint-btn" class="btn btn-outline">💡 Hint</button>
+                    </div>
+                </div>
+
+                <!-- Feedback -->
+                <div class="feedback-card" id="feedback-card">
+                    <div class="feedback-header" id="feedback-header">
+                        <span id="feedback-icon">🎉</span>
+                        <span id="feedback-text">Correct!</span>
+                    </div>
+                    <div class="feedback-body">
+                        <div class="answer-compare">
+                            <div class="ans yours">
+                                <span class="ans-label">Your answer</span>
+                                <span class="ans-value" id="your-answer">0</span>
+                            </div>
+                            <div class="ans-arrow">→</div>
+                            <div class="ans correct">
+                                <span class="ans-label">Correct answer</span>
+                                <span class="ans-value" id="correct-answer">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="nav-row">
+                    <button id="next-btn" class="btn btn-primary btn-large">Next Question →</button>
+                    <a href="{{ url_for('start') }}" class="btn btn-outline">← Shapes</a>
+                    <a href="{{ url_for('results') }}" class="btn btn-ghost">📊 Progress</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.practice-section {
+    min-height: 100vh;
+    background: #f1f5f9;
+}
+
+/* Header Strip */
+.header-strip {
+    padding: 1.25rem 2rem;
+    color: white;
+}
+.header-strip.square { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.header-strip.rectangle { background: linear-gradient(135deg, #10b981, #047857); }
+.header-strip.triangle { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.header-strip.circle { background: linear-gradient(135deg, #ec4899, #be185d); }
+
+.header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.shape-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.header-inner h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    flex: 1;
+}
+
+.review-btn {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+}
+.review-btn:hover { opacity: 1; }
+
+/* Main Content */
+.main-content {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Practice Grid */
+.practice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+@media (max-width: 1000px) {
+    .practice-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Question Panel */
+.question-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Tutor Bar */
+.tutor-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: white;
+    padding: 1rem 1.25rem;
+    border-radius: 16px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+}
+
+.tutor-avatar {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(180deg, #6366f1, #4f46e5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.tutor-face {
+    width: 35px;
+    height: 35px;
+    background: #fef3c7;
+    border-radius: 50%;
+    position: relative;
+}
+
+.eye {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #1e293b;
+    border-radius: 50%;
+    top: 11px;
+}
+.eye.left { left: 8px; }
+.eye.right { right: 8px; }
+
+.mouth {
+    position: absolute;
+    width: 10px;
+    height: 5px;
+    background: #1e293b;
+    border-radius: 0 0 10px 10px;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.3s;
+}
+
+.tutor-avatar.happy .mouth {
+    height: 7px;
+    border-radius: 0 0 10px 10px;
+}
+.tutor-avatar.sad .mouth {
+    border-radius: 10px 10px 0 0;
+    bottom: 10px;
+}
+.tutor-avatar.celebrate {
+    animation: bounce 0.4s ease infinite;
+}
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+.tutor-msg {
+    flex: 1;
+    color: #475569;
+    line-height: 1.5;
+}
+.tutor-msg strong { color: #6366f1; }
+
+/* Question Card */
+.question-card {
+    background: white;
+    border-radius: 20px;
+    padding: 1.75rem;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+    flex: 1;
+}
+
+.q-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.q-text {
+    font-size: 1.2rem;
+    color: #1e293b;
+    margin: 0 0 1.5rem;
+    line-height: 1.5;
+}
+
+.shape-display {
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 220px;
+}
+
+/* Visual Shapes */
+.vis-square {
+    width: 130px;
+    height: 130px;
+    background: rgba(59,130,246,0.12);
+    border: 3px solid #3b82f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vis-rectangle {
+    width: 160px;
+    height: 100px;
+    background: rgba(16,185,129,0.12);
+    border: 3px solid #10b981;
+    position: relative;
+}
+
+.vis-triangle-wrap {
+    position: relative;
+    padding: 20px 50px 30px;
+}
+
+.vis-triangle {
+    width: 0;
+    height: 0;
+    border-left: 60px solid transparent;
+    border-right: 60px solid transparent;
+    border-bottom: 100px solid rgba(245,158,11,0.4);
+}
+
+.vis-circle {
+    width: 120px;
+    height: 120px;
+    background: rgba(236,72,153,0.12);
+    border: 3px solid #ec4899;
+    border-radius: 50%;
+    position: relative;
+}
+
+.radius-mark {
+    position: absolute;
+    width: 50%;
+    height: 3px;
+    background: #ec4899;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%);
+}
+.radius-mark::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background: #ec4899;
+    border-radius: 50%;
+}
+
+.dim {
+    background: white;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.dim.top { position: absolute; top: -28px; left: 50%; transform: translateX(-50%); }
+.dim.side { position: absolute; right: -50px; top: 50%; transform: translateY(-50%); }
+.dim.base { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); }
+.dim.height { position: absolute; right: 0; top: 50%; transform: translateY(-50%); }
+.dim.bottom { position: absolute; bottom: -32px; left: 50%; transform: translateX(-50%); }
+
+/* Answer Panel */
+.answer-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.answer-card {
+    background: white;
+    border-radius: 20px;
+    padding: 1.75rem;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+}
+
+.answer-card label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.75rem;
+}
+
+.input-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.input-row input {
+    flex: 1;
+    padding: 1rem 1.25rem;
+    font-size: 1.25rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.input-row input:focus {
+    border-color: #6366f1;
+}
+
+.unit {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    padding: 0.75rem 1.25rem;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.hint-box {
+    display: none;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: #fef3c7;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    color: #92400e;
+}
+.hint-box.show { display: flex; }
+.hint-icon { font-size: 1.25rem; }
+
+.btn-row {
+    display: flex;
+    gap: 0.75rem;
+}
+
+/* Feedback Card */
+.feedback-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+    display: none;
+}
+.feedback-card.show {
+    display: block;
+    animation: slideIn 0.3s ease;
+}
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.feedback-header {
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+.feedback-card.correct .feedback-header {
+    background: linear-gradient(135deg, #10b981, #34d399);
+    color: white;
+}
+.feedback-card.incorrect .feedback-header {
+    background: linear-gradient(135deg, #f43f5e, #fb7185);
+    color: white;
+}
+
+.feedback-body {
+    padding: 1.5rem;
+}
+
+.answer-compare {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.ans {
+    text-align: center;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+}
+.ans.yours { background: #f1f5f9; }
+.ans.correct { background: #d1fae5; }
+.ans-label {
+    display: block;
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-bottom: 0.25rem;
+}
+.ans-value {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+.ans-arrow {
+    color: #94a3b8;
+    font-size: 1.25rem;
+}
+
+/* Nav Row */
+.nav-row {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+#next-btn {
+    display: none;
+}
+#next-btn.show {
+    display: inline-flex;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-primary {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: white;
+    box-shadow: 0 4px 15px rgba(99,102,241,0.3);
+}
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99,102,241,0.4);
+}
+.btn-outline {
+    background: white;
+    color: #475569;
+    border: 2px solid #e2e8f0;
+}
+.btn-outline:hover {
+    background: #f8fafc;
+}
+.btn-ghost {
+    background: transparent;
+    color: #6366f1;
+}
+.btn-large {
+    padding: 1rem 1.75rem;
+}
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    .header-inner {
+        justify-content: center;
+        text-align: center;
+    }
+    .header-inner h1 {
+        flex: none;
+        width: 100%;
+    }
+    .tutor-bar {
+        flex-direction: column;
+        text-align: center;
+    }
+    .btn-row, .nav-row {
+        flex-direction: column;
+    }
+    .btn-row .btn, .nav-row .btn {
+        width: 100%;
+    }
+    .answer-compare {
+        flex-direction: column;
+    }
+    .ans-arrow {
+        transform: rotate(90deg);
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var tutor = document.getElementById('tutor-avatar');
+    var tutorMsg = document.getElementById('tutor-message');
+    var hintBox = document.getElementById('hint-box');
+    var feedbackCard = document.getElementById('feedback-card');
+    var nextBtn = document.getElementById('next-btn');
+    var submitBtn = document.getElementById('submit-btn');
+    var answerInput = document.getElementById('answer');
+    
+    document.getElementById('hint-btn').onclick = function() {
+        hintBox.classList.add('show');
+        this.disabled = true;
+        tutorMsg.innerHTML = "Here's a hint to help you! 💡";
+    };
+    
+    submitBtn.onclick = submitAnswer;
+    answerInput.onkeypress = function(e) {
+        if (e.key === 'Enter') submitAnswer();
+    };
+    
+    function submitAnswer() {
+        var userAnswer = parseFloat(answerInput.value);
+        if (isNaN(userAnswer)) {
+            tutorMsg.innerHTML = "Please enter a number! 🔢";
+            return;
+        }
+        
+        submitBtn.disabled = true;
+        tutorMsg.innerHTML = "Checking... 🤔";
+        
+        fetch('/api/submit-answer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_answer: userAnswer })
+        })
+        .then(function(r) { return r.json(); })
+        .then(showFeedback)
+        .catch(function() {
+            tutorMsg.innerHTML = "Oops! Something went wrong. 😅";
+            submitBtn.disabled = false;
+        });
+    }
+    
+    function showFeedback(data) {
+        if (data.is_correct) {
+            tutor.className = 'tutor-avatar happy celebrate';
+            tutorMsg.innerHTML = "🎉 <strong>Excellent!</strong> You got it right!";
+        } else {
+            tutor.className = 'tutor-avatar sad';
+            tutorMsg.innerHTML = "Not quite. The answer is <strong>" + data.correct_answer + " cm²</strong>. Keep going! 💪";
+        }
+        
+        feedbackCard.className = 'feedback-card show ' + (data.is_correct ? 'correct' : 'incorrect');
+        document.getElementById('feedback-icon').textContent = data.is_correct ? '🎉' : '💪';
+        document.getElementById('feedback-text').textContent = data.is_correct ? 'Correct!' : 'Not quite';
+        document.getElementById('your-answer').textContent = data.user_answer + ' cm²';
+        document.getElementById('correct-answer').textContent = data.correct_answer + ' cm²';
+        
+        nextBtn.classList.add('show');
+        answerInput.disabled = true;
+    }
+    
+    nextBtn.onclick = function() { location.reload(); };
+});
+</script>
+{% endblock %}

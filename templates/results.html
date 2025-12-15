@@ -1,0 +1,598 @@
+{% extends "base.html" %}
+
+{% block title %}My Progress - Geometry ITS{% endblock %}
+
+{% block content %}
+<section class="results-section">
+    
+    <!-- Header Banner -->
+    <div class="header-banner">
+        <div class="banner-content">
+            <div class="tutor-icon">
+                <div class="tutor-face">
+                    <div class="eye left"></div>
+                    <div class="eye right"></div>
+                    <div class="smile"></div>
+                </div>
+            </div>
+            <div class="banner-text">
+                <h1>📊 Your Progress</h1>
+                <p>Track your geometry learning journey</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        <!-- Stats Row -->
+        <div class="stats-row">
+            <div class="stat-card purple">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-data">
+                    <span class="stat-num">{{ progress.get('accuracy', 0) }}%</span>
+                    <span class="stat-label">Accuracy</span>
+                </div>
+            </div>
+            <div class="stat-card green">
+                <div class="stat-icon">✓</div>
+                <div class="stat-data">
+                    <span class="stat-num">{{ progress.get('correct_answers', 0) }}</span>
+                    <span class="stat-label">Correct</span>
+                </div>
+            </div>
+            <div class="stat-card orange">
+                <div class="stat-icon">📝</div>
+                <div class="stat-data">
+                    <span class="stat-num">{{ progress.get('total_attempts', 0) }}</span>
+                    <span class="stat-label">Total</span>
+                </div>
+            </div>
+            <div class="stat-card pink">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-data">
+                    <span class="stat-num">{{ progress.get('shapes_completed', 0) }}/4</span>
+                    <span class="stat-label">Complete</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shape Progress -->
+        <div class="progress-section">
+            <h2>Shape Progress</h2>
+            
+            <div class="shapes-grid">
+                {% set shape_prog = progress.get('shape_progress', {}) %}
+                
+                <!-- Square -->
+                {% set sq = shape_prog.get('square', {}) %}
+                <div class="shape-progress-card {% if sq.get('completed') %}done{% endif %}">
+                    <div class="shape-icon blue">
+                        <div class="mini-square"></div>
+                    </div>
+                    <div class="shape-info">
+                        <h3>Square</h3>
+                        <div class="prog-bar-wrap">
+                            <div class="prog-bar blue" style="width: {{ sq.get('score', 0) }}%"></div>
+                        </div>
+                        <span class="prog-text">{{ sq.get('score', 0) }}% complete</span>
+                    </div>
+                    <div class="shape-action">
+                        {% if sq.get('completed') %}
+                        <span class="done-badge">✓ Done</span>
+                        {% else %}
+                        <a href="{{ url_for('practice', shape_name='square') }}" class="btn btn-small">Practice</a>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Rectangle -->
+                {% set rect = shape_prog.get('rectangle', {}) %}
+                <div class="shape-progress-card {% if rect.get('completed') %}done{% endif %}">
+                    <div class="shape-icon green">
+                        <div class="mini-rectangle"></div>
+                    </div>
+                    <div class="shape-info">
+                        <h3>Rectangle</h3>
+                        <div class="prog-bar-wrap">
+                            <div class="prog-bar green" style="width: {{ rect.get('score', 0) }}%"></div>
+                        </div>
+                        <span class="prog-text">{{ rect.get('score', 0) }}% complete</span>
+                    </div>
+                    <div class="shape-action">
+                        {% if rect.get('completed') %}
+                        <span class="done-badge">✓ Done</span>
+                        {% else %}
+                        <a href="{{ url_for('practice', shape_name='rectangle') }}" class="btn btn-small">Practice</a>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Triangle -->
+                {% set tri = shape_prog.get('triangle', {}) %}
+                <div class="shape-progress-card {% if tri.get('completed') %}done{% endif %}">
+                    <div class="shape-icon orange">
+                        <div class="mini-triangle"></div>
+                    </div>
+                    <div class="shape-info">
+                        <h3>Triangle</h3>
+                        <div class="prog-bar-wrap">
+                            <div class="prog-bar orange" style="width: {{ tri.get('score', 0) }}%"></div>
+                        </div>
+                        <span class="prog-text">{{ tri.get('score', 0) }}% complete</span>
+                    </div>
+                    <div class="shape-action">
+                        {% if tri.get('completed') %}
+                        <span class="done-badge">✓ Done</span>
+                        {% else %}
+                        <a href="{{ url_for('practice', shape_name='triangle') }}" class="btn btn-small">Practice</a>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Circle -->
+                {% set circ = shape_prog.get('circle', {}) %}
+                <div class="shape-progress-card {% if circ.get('completed') %}done{% endif %}">
+                    <div class="shape-icon pink">
+                        <div class="mini-circle"></div>
+                    </div>
+                    <div class="shape-info">
+                        <h3>Circle</h3>
+                        <div class="prog-bar-wrap">
+                            <div class="prog-bar pink" style="width: {{ circ.get('score', 0) }}%"></div>
+                        </div>
+                        <span class="prog-text">{{ circ.get('score', 0) }}% complete</span>
+                    </div>
+                    <div class="shape-action">
+                        {% if circ.get('completed') %}
+                        <span class="done-badge">✓ Done</span>
+                        {% else %}
+                        <a href="{{ url_for('practice', shape_name='circle') }}" class="btn btn-small">Practice</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        {% if progress.get('total_attempts', 0) == 0 %}
+        <div class="empty-state">
+            <div class="empty-icon">📚</div>
+            <h3>Start Your Journey!</h3>
+            <p>You haven't practiced any questions yet. Choose a shape to begin learning and tracking your progress!</p>
+            <a href="{{ url_for('start') }}" class="btn btn-primary btn-large">🎯 Start Learning</a>
+        </div>
+        {% endif %}
+
+        <!-- Actions -->
+        <div class="actions-row">
+            <a href="{{ url_for('start') }}" class="btn btn-primary btn-large">
+                Continue Learning →
+            </a>
+            <a href="{{ url_for('reset') }}" class="btn btn-danger" onclick="return confirm('Reset all progress?')">
+                🗑️ Reset Progress
+            </a>
+        </div>
+    </div>
+</section>
+
+<style>
+.results-section {
+    min-height: 100vh;
+    background: #f1f5f9;
+}
+
+/* Header Banner */
+.header-banner {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    padding: 2rem;
+    color: white;
+}
+
+.banner-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.tutor-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(180deg, #818cf8, #6366f1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 3px solid rgba(255,255,255,0.3);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.tutor-face {
+    width: 48px;
+    height: 48px;
+    background: #fef3c7;
+    border-radius: 50%;
+    position: relative;
+}
+
+.eye {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #1e293b;
+    border-radius: 50%;
+    top: 16px;
+}
+.eye.left { left: 12px; }
+.eye.right { right: 12px; }
+
+.smile {
+    position: absolute;
+    width: 14px;
+    height: 7px;
+    border: 2px solid #1e293b;
+    border-top: none;
+    border-radius: 0 0 14px 14px;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.banner-text h1 {
+    margin: 0 0 0.25rem;
+    font-size: 2rem;
+}
+
+.banner-text p {
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* Main Content */
+.main-content {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Stats Row */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 900px) {
+    .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+}
+
+.stat-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+}
+
+.stat-card.purple::before { background: linear-gradient(90deg, #6366f1, #8b5cf6); }
+.stat-card.green::before { background: linear-gradient(90deg, #10b981, #34d399); }
+.stat-card.orange::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.stat-card.pink::before { background: linear-gradient(90deg, #ec4899, #f472b6); }
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    background: #f8fafc;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.stat-data {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-num {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.2;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+/* Progress Section */
+.progress-section {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+}
+
+.progress-section h2 {
+    margin: 0 0 1.5rem;
+    font-size: 1.25rem;
+    color: #1e293b;
+}
+
+.shapes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+}
+
+@media (max-width: 700px) {
+    .shapes-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.shape-progress-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: #f8fafc;
+    border-radius: 14px;
+    transition: background 0.2s;
+}
+
+.shape-progress-card:hover {
+    background: #f1f5f9;
+}
+
+.shape-progress-card.done {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border: 1px solid #86efac;
+}
+
+.shape-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.shape-icon.blue { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+.shape-icon.green { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+.shape-icon.orange { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+.shape-icon.pink { background: linear-gradient(135deg, #fce7f3, #fbcfe8); }
+
+.mini-square {
+    width: 22px;
+    height: 22px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border-radius: 4px;
+}
+
+.mini-rectangle {
+    width: 28px;
+    height: 18px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-radius: 3px;
+}
+
+.mini-triangle {
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 22px solid #f59e0b;
+}
+
+.mini-circle {
+    width: 22px;
+    height: 22px;
+    background: linear-gradient(135deg, #ec4899, #db2777);
+    border-radius: 50%;
+}
+
+.shape-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.shape-info h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    color: #1e293b;
+}
+
+.prog-bar-wrap {
+    width: 100%;
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.35rem;
+}
+
+.prog-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.prog-bar.blue { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+.prog-bar.green { background: linear-gradient(90deg, #10b981, #34d399); }
+.prog-bar.orange { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.prog-bar.pink { background: linear-gradient(90deg, #ec4899, #f472b6); }
+
+.prog-text {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.shape-action {
+    flex-shrink: 0;
+}
+
+.done-badge {
+    display: inline-block;
+    padding: 0.4rem 0.875rem;
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    color: #065f46;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 20px;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 20px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
+    color: #1e293b;
+}
+
+.empty-state p {
+    margin: 0 0 1.5rem;
+    color: #64748b;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Actions Row */
+.actions-row {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-small {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: white;
+}
+
+.btn-small:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: white;
+    box-shadow: 0 4px 15px rgba(99,102,241,0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99,102,241,0.4);
+}
+
+.btn-danger {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.btn-danger:hover {
+    background: #fee2e2;
+}
+
+.btn-large {
+    padding: 1rem 2rem;
+}
+
+@media (max-width: 600px) {
+    .banner-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .actions-row {
+        flex-direction: column;
+    }
+    
+    .actions-row .btn {
+        width: 100%;
+    }
+    
+    .shape-progress-card {
+        flex-wrap: wrap;
+    }
+    
+    .shape-info {
+        width: calc(100% - 60px);
+    }
+    
+    .shape-action {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+    
+    .shape-action .btn-small {
+        width: 100%;
+    }
+}
+</style>
+{% endblock %}
