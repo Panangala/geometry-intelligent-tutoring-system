@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 ontology_handler = initialize_ontology(app.config['ONTOLOGY_PATH'])
 logger.info("Ontology handler initialized successfully")
 
-# ============== LEVEL CONFIGURATION ==============
+# LEVEL CONFIGURATION
 LEVELS = {
     'beginner': {
         'name': 'Beginner',
@@ -703,4 +703,5 @@ def server_error(e):
 
 if __name__ == '__main__':
     logger.info("Starting Geometry ITS with Level System")
+
     app.run(host='127.0.0.1', port=5000, debug=True)
