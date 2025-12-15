@@ -1,382 +1,180 @@
 # Geometry Intelligent Tutoring System
 
-## Project Overview
+## Overview
 
-A semantic web-based **Intelligent Tutoring System (ITS) for two-dimensional geometry education** using OWL ontologies and adaptive learning techniques. This system demonstrates the integration of formal knowledge representation, machine learning principles, and pedagogical design in educational technology.
+This is an intelligent tutoring system for teaching geometry. The main focus is on area calculations for four basic shapes: square, rectangle, triangle, and circle. The system uses semantic web technologies (OWL ontologies) and adapts to each student's performance level.
 
-The system focuses on teaching area calculations for four geometric shapes: **square, rectangle, triangle, and circle** through personalized, adaptive problem-solving activities with real-time feedback.
+The basic idea is to combine formal knowledge representation using ontologies with adaptive learning that changes the difficulty of problems based on how well the student is doing.
 
-## Key Features
+## What This System Does
 
-✅ **Ontology-Based Knowledge Representation**
-- Formal OWL ontology with 5 core classes: shape, measurement, property, formula, LearningConcept
-- Machine-interpretable domain knowledge using semantic web standards
-- Dynamic knowledge queries via SPARQL without hardcoded content
+The system has several main components:
 
-✅ **Adaptive Difficulty Mechanism**
-- Real-time difficulty adjustment based on learner performance
-- 80% advancement threshold and 50% retreat threshold (based on Cognitive Load Theory)
-- Three difficulty levels (easy, medium, hard) with parametric problem variation
+1. Ontology-Based Knowledge: The geometry knowledge is stored in an OWL ontology file instead of being written directly into the code. This makes it easier to add new shapes or update formulas without changing the application itself.
 
-✅ **Intelligent Problem Generation**
-- Automated problem generation with varying parameters
-- Shape-specific measurement requirements
-- Formula-based answer evaluation with 2% tolerance
+2. Adaptive Difficulty: The system tracks student performance. If a student gets 80% or more problems correct, it moves them to harder problems. If they drop below 50%, it goes back to easier problems. This is based on research showing that students learn best when they get about 70-80% of problems right.
 
-✅ **Responsive Web-Based Interface**
-- Home page with shape selection
-- Lesson display with geometric explanations
-- Interactive practice problem interface
-- Results dashboard with progress tracking
-- Mobile-optimized responsive design
+3. Problem Generation: Problems are automatically generated with random parameters. The system pulls what measurements are needed from the ontology, so for a circle it knows it needs a radius.
 
-✅ **Pedagogical Design**
-- Research-grounded difficulty thresholds
-- Concept-based learning objectives
-- Prerequisite relationships between concepts
-- Real-time feedback and encouragement
+4. Web Interface: There is a simple web-based interface where students select a shape, read a lesson about it, then practice solving problems. They can see their progress on a dashboard.
 
-## System Architecture
+## How to Install
 
+You need Python 3.7 or later with pip. Then follow these steps:
+
+Clone the repository:
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    User Interface (Web)                     │
-│  (HTML/CSS/JavaScript - Flask Templates)                    │
-└────────────────────┬────────────────────────────────────────┘
-                     │ HTTP Requests
-                     ↓
-┌─────────────────────────────────────────────────────────────┐
-│              Flask Web Application Server                    │
-│  • Request routing                                           │
-│  • Session management                                        │
-│  • Response formatting                                       │
-└────────────────────┬────────────────────────────────────────┘
-                     │ SPARQL Queries
-                     ↓
-┌─────────────────────────────────────────────────────────────┐
-│             Learning Engine & Ontology Handler              │
-│  • Problem generation algorithms                             │
-│  • Answer evaluation logic                                   │
-│  • Adaptive difficulty adjustment                            │
-│  • SPARQL query execution (RDFLib)                           │
-└────────────────────┬────────────────────────────────────────┘
-                     │ OWL Queries
-                     ↓
-┌─────────────────────────────────────────────────────────────┐
-│            OWL Knowledge Base (Ontology)                     │
-│  • Geometry domain knowledge                                 │
-│  • Formulas and measurements                                 │
-│  • Learning concepts and prerequisites                       │
-│  • Shape properties and relationships                        │
-└─────────────────────────────────────────────────────────────┘
+[git clone https://github.com/YOUR_USERNAME/geometry-intelligent-tutoring-system.git
+cd geometry-intelligent-tutoring-system]
 ```
 
-## Technologies Used
-
-### Frontend
-- **HTML5** - Semantic markup
-- **CSS3** - Responsive design with media queries
-- **JavaScript** - Asynchronous interactions and dynamic updates
-- **Flask Jinja2** - Template rendering
-
-### Backend
-- **Python 3** - Core application logic
-- **Flask** - Web framework and HTTP server
-- **RDFLib** - SPARQL query execution over RDF/OWL
-
-### Knowledge Representation
-- **OWL (Web Ontology Language)** - Formal ontology specification
-- **SPARQL** - Semantic query language for ontology retrieval
-- **Protégé** - Ontology development and validation (tool)
-
-### Learning Science Foundations
-- **Cognitive Load Theory** (Sweller et al., 2011)
-- **Adaptive Learning Principles** (Kulik & Fletcher, 2016)
-- **Problem Variety Effects** (Ravi & D'Mello, 2023)
-
-## Installation & Setup
-
-### Prerequisites
-- Python 3.7+
-- pip (Python package manager)
-- A modern web browser
-
-### Step 1: Clone the Repository
-```bash
-git clone https://github.com/YOUR_USERNAME/geometry-intelligent-tutoring-system.git
-cd geometry-intelligent-tutoring-system
+Install the required packages:
 ```
-
-### Step 2: Install Dependencies
-```bash
 pip install -r requirements.txt
 ```
 
-**Key Dependencies:**
-- Flask - Web application framework
-- RDFLib - RDF/OWL processing
-- Werkzeug - WSGI utilities
-
-### Step 3: Run the Application
-```bash
+Run the application:
+```
 python app.py
 ```
 
-### Step 4: Access in Browser
-Open your web browser and navigate to:
-```
-http://localhost:5000
-```
+Then open a browser and go to http://localhost:5000
 
-The home page will display four geometric shapes (square, rectangle, triangle, circle) for selection.
+## Files in This Project
 
-## Project Structure
+- geometry_ontology.owl - The ontology file containing the geometry knowledge. It has classes for shapes, measurements, properties, formulas, and learning concepts.
 
-```
-geometry-intelligent-tutoring-system/
-│
-├── geometry_ontology.owl          # OWL ontology (knowledge base)
-│
-├── app.py                         # Flask application server
-├── learning_engine.py             # Learning algorithms & adaptation
-├── ontology_handler.py            # SPARQL query interface
-│
-├── templates/                     # HTML interface templates
-│   ├── base.html                  # Base template
-│   ├── index.html                 # Home/shape selection
-│   ├── lesson.html                # Lesson display
-│   ├── practice.html              # Practice problems
-│   └── dashboard.html             # Results dashboard
-│
-├── static/                        # Static files
-│   ├── style.css                  # Responsive styling
-│   └── script.js                  # Client-side JavaScript
-│
-├── requirements.txt               # Python dependencies
-├── README.md                      # This file
-└── .gitignore                     # Git configuration
-```
+- app.py - The main Flask application that runs the web server
 
-## Usage Guide
+- learning_engine.py - The logic for generating problems, evaluating answers, and changing difficulty
 
-### 1. Home Page
-- Select one of four shapes: **Square**, **Rectangle**, **Triangle**, **Circle**
-- Click the shape button to begin learning
+- ontology_handler.py - Handles queries to the ontology using SPARQL
 
-### 2. Lesson Page
-- Read the shape definition and properties
-- View the area formula with explanation
-- Navigate with Previous/Next buttons
-- Click "Start Practice" to solve problems
+- templates/ - HTML files for the user interface (home page, lessons, practice, dashboard)
 
-### 3. Practice Problems
-- Solve geometry problems with randomly generated parameters
-- Enter your answer in the text field
-- Receive immediate feedback
-- System adjusts difficulty based on your performance
-  - **80% success rate** → advance to harder problems
-  - **Below 50% success rate** → retreat to easier problems
+- static/ - CSS styling and JavaScript files
 
-### 4. Results Dashboard
-- View current difficulty level
-- Track overall accuracy percentage
-- See correct vs. incorrect attempt counts
-- Monitor completed problem categories
-- Watch real-time progress updates
+## The Ontology
 
-## Ontology Structure
+The ontology has five main classes:
 
-The system uses a formal OWL ontology with five core classes:
+1. shape - The four geometric shapes (square, rectangle, triangle, circle)
 
-### Core Classes
-1. **shape** - Geometric entities (square, rectangle, triangle, circle)
-2. **measurement** - Parameters for calculations (area, radius, length, width, height, base, diameter)
-3. **property** - Shape characteristics (AngleMeasure, NumberOfSides, SideLength)
-4. **formula** - Mathematical expressions (AreaFormula, CircumferenceFormula)
-5. **LearningConcept** - Educational objectives (UnderstandingArea, ShapeProperties, FormulaApplication, ProblemSolving)
+2. measurement - The measurements needed for each shape (area, radius, length, width, height, base, diameter)
 
-### Object Properties
-- `hasProperty` - Shape possesses properties
-- `requiresMeasurement` - Shape requires specific measurements
-- `usesFormula` - Shape uses mathematical formula
-- `hasPrerequisite` - Learning concept prerequisites
-- `complementary` - Related properties
+3. property - Characteristics of shapes (number of sides, side length, angle measure)
 
-### Data Properties
-- `hasExpression` - Mathematical notation (e.g., "A = πr²")
-- `hasExplanation` - Pedagogical explanation
-- `hasDescription` - Entity description
-- `hasComment` - Additional notes
-- `numberOfSides` - Integer values
+4. formula - Mathematical formulas for calculating area
 
-## Adaptive Difficulty Algorithm
+5. LearningConcept - Learning goals (understanding area, identifying properties, applying formulas, solving problems)
 
-The system implements a simple but effective adaptive mechanism based on Cognitive Load Theory:
+The classes have relationships:
+- hasProperty - shapes have properties
+- requiresMeasurement - shapes need specific measurements
+- usesFormula - shapes use formulas
+- hasPrerequisite - some learning concepts depend on others
 
-```
-IF student_accuracy >= 80%:
-    THEN increase_difficulty()
-    # Advance to next level (e.g., medium to hard)
-    
-ELSE IF student_accuracy < 50%:
-    THEN decrease_difficulty()
-    # Retreat to previous level (e.g., hard to medium)
-    
-ELSE:
-    THEN maintain_difficulty()
-    # Stay at current level
-```
+## How It Works
 
-**Difficulty Levels by Shape:**
-- **Easy**: Small numbers (1-5)
-- **Medium**: Moderate numbers (5-10)
-- **Hard**: Larger numbers (10-20)
+When a student starts, they see a home page with four shape buttons. They pick a shape and see a lesson explaining that shape and how to calculate its area. Then they go to the practice section to solve problems.
 
-## System Evaluation
+The learning engine generates random problems using parameters from the ontology. For a square at easy level, it picks random numbers between 1 and 5 for the side. For medium it uses 5-10, for hard it uses 10-20.
 
-### Functional Testing
-✅ Problem generation with expected parameters  
-✅ Answer evaluation with tolerance levels  
-✅ Adaptive mechanism activation (80%/50% thresholds)  
-✅ User interface responsiveness  
+When the student submits an answer, the system calculates the correct answer using the formula from the ontology and compares it with what the student entered. It allows a 2% tolerance for rounding errors.
 
-### Performance Metrics
-- Problem generation: < 100ms average
-- Answer evaluation: < 150ms average
-- Interface load time: < 1s on modern browsers
+The system tracks correct and incorrect answers. If the student gets 80% or more correct, it moves to a harder level. If they get less than 50%, it moves to an easier level.
 
-### Pedagogical Assessment
-✅ Appropriate difficulty progression  
-✅ Clear explanations and feedback  
-✅ Encouragement through progress tracking  
-✅ Learning concept alignment  
+## Features
 
-## Limitations & Future Work
+Problem Generation: The system uses SPARQL to ask the ontology which measurements a shape needs. For example, asking "what measurements does a circle need?" returns "radius". Then it generates random values for those measurements.
 
-### Current Limitations
-- No persistent data storage (session-only)
-- Basic user modelling (accuracy tracking only)
-- Simple adaptive mechanism (threshold-based)
-- Template-based feedback (no NLP generation)
-- Single-user design (no multi-user support)
+Answer Evaluation: When a student submits an answer, the system looks up the formula for that shape, calculates the right answer, and compares it. The 2% tolerance handles rounding differences.
 
-### Planned Enhancements
-1. **Database Integration** - Permanent student record storage
-2. **Rich User Models** - Misconception detection and tracking
-3. **Advanced Adaptation** - Item Response Theory (IRT) implementation
-4. **Natural Language Feedback** - Dynamic feedback generation
-5. **Instructor Analytics** - Progress dashboards for educators
-6. **Collaborative Learning** - Multi-user problem-solving features
+Adaptive Mechanism: The system keeps track of correct and incorrect answers. When accuracy goes above 80%, it advances to harder problems. When it drops below 50%, it retreats to easier ones. This is based on research showing students learn best when challenged but not overwhelmed.
 
-## Technical Implementation Details
+Session Management: Student progress is stored in the Flask session during their visit. When they close the browser, the data is not saved.
 
-### Problem Generation
-The system queries the ontology to dynamically generate problems:
-```
-SPARQL Query: SELECT ?measurements WHERE ?shape requiresMeasurement ?measurements
-Purpose: Retrieve required measurements for selected shape
-Result: Parameters for problem generation
-```
+## Using the System
 
-### Answer Evaluation
-Formula-based evaluation with configurable tolerance:
-```
-Tolerance: 2% of calculated answer
-Handles: Rounding differences, irrational number approximations
-Feedback: Correct/incorrect with explanation
-```
+1. Home page - Click the shape you want to learn
+2. Lesson page - Read about the shape and see the formula
+3. Practice page - Solve problems that are shown with specific measurements
+4. Enter your answer and submit
+5. Dashboard - See your progress, current difficulty, and accuracy percentage
 
-### Session Management
-State persisted in Flask session dictionary:
-- Current difficulty level
-- Performance metrics
-- Learning history (current session only)
-- User progress tracking
+## Current Limitations
 
-## Code Quality Standards
+The current version has some limitations:
 
-✅ Clear naming conventions (PEP 8 for Python)  
-✅ Modular architecture (separation of concerns)  
-✅ Comprehensive error handling  
-✅ Code comments and docstrings  
-✅ DRY principle (Don't Repeat Yourself)  
-✅ Responsive design best practices  
+- Data is not saved after the session ends. If a student closes the browser, their progress is lost.
 
-## Learning Outcomes Addressed
+- The system only tracks how many problems they get right. It doesn't try to identify specific misconceptions.
 
-This project demonstrates:
-1. **Research-Grounded Design** - Based on learning science literature
-2. **Critical Analysis** - Comparison with existing ITS systems
-3. **Professional Implementation** - Industry-standard technologies
-4. **Novel Synthesis** - Integration of semantic web with education
-5. **Standards Compliance** - OWL, SPARQL, web standards
+- Feedback is simple and uses templates. It doesn't give customized explanations based on specific errors.
+
+- It is designed for one student at a time.
+
+- There is no database, so no student accounts or long-term progress tracking.
+
+These are things that could be added in the future.
+
+## Technologies
+
+Frontend:
+- HTML5 for page structure
+- CSS3 for styling with responsive design
+- JavaScript for interactive elements
+
+Backend:
+- Python 3 with Flask framework
+- RDFLib for handling the OWL ontology
+- SPARQL for querying the ontology
+
+## Deployment
+
+For testing you can run the Flask development server with python app.py. For a real deployment you would want to:
+
+- Use a production server like Gunicorn instead of the Flask development server
+- Set up a database to store student information
+- Use HTTPS for security
+- Add user authentication
+- Set up load balancing if many students will use it
+
+## Possible Improvements
+
+Some ideas for making this better:
+
+1. Database integration to save student records and track progress over time
+
+2. Better user modeling to detect specific misconceptions
+
+3. More advanced adaptive algorithms using item response theory
+
+4. Natural language generation for more varied feedback
+
+5. Support for multiple students using the system at once
+
+6. Analytics tools for teachers
 
 ## References
 
-- Kulik, J.A. and Fletcher, J.D. (2016) 'Effectiveness of intelligent tutoring systems: A meta-analytic review', *Review of Educational Research*, 86(4), pp. 1–39.
-- Sweller, J., Ayres, P. and Kalyuga, S. (2011) *Cognitive Load Theory*. New York: Springer.
-- Bittencourt, I.I. et al. (2020) 'Ontology-based framework for intelligent tutoring systems design', *Computers & Education*, 155, 103743.
-- Ravi, S. and D'Mello, S. (2023) 'Repetition, variation and success: The impact of problem diversity on mathematical learning', *Journal of Educational Psychology*, 115(3), pp. 617–635.
+The design of this system is based on learning science research:
 
-## Deployment Notes
-
-### For Production Deployment
-1. Set Flask `DEBUG=False`
-2. Use production WSGI server (Gunicorn, uWSGI)
-3. Configure proper static file serving
-4. Implement HTTPS
-5. Add user authentication
-6. Integrate persistent database
-7. Set up load balancing for multiple users
-
-### Scalability Considerations
-- Current design supports small-scale deployment (tens of concurrent users)
-- Ontology queries cached for performance
-- RDFLib reasoner can be optimized for larger ontologies
-- Consider ontology partitioning for complex domains
-
-## Contributing
-
-This is an academic research project. Contributions welcome for:
-- Bug fixes and improvements
-- Additional geometric shapes/concepts
-- Enhanced adaptation mechanisms
-- Pedagogical enhancements
-- Documentation improvements
-
-## License
-
-Academic Use Only
-
-This system was developed as part of an MSc Computer Science program. Use for educational and research purposes.
+- Kulik and Fletcher (2016) showed intelligent tutoring systems are effective
+- Sweller et al. (2011) showed students learn best at about 70-80% success rate (cognitive load theory)
+- Bittencourt et al. (2020) showed benefits of using ontologies in tutoring systems
+- Research shows that variety in problems helps students learn and transfer knowledge better
 
 ## Author
 
-**WICKRAMASINGHE ARACHCHILAGE ISURU LAKINDU PANANGALA PERERA**
-- Student Number: 240231390
-- Institution: York St John University, London Campus
-- Supervisor: Prof. Anil Fernando
+Developed by Isuru Lakindu Panangala Perera as part of an MSc Computer Science program at York St John University, London Campus. Supervisor is Prof. Anil Fernando.
 
-## Acknowledgments
+## License
 
-- Learning science foundations: Cognitive Load Theory and adaptive learning research
-- Semantic web technologies: OWL, SPARQL, RDFLib
-- Web technologies: Flask, responsive CSS, modern JavaScript
-- Educational design principles: Research-based pedagogy
+Academic use only. This was developed for a university assignment.
 
-## Contact & Support
+## Notes
 
-For questions or issues regarding this project:
-- Review the detailed project report (included)
-- Check GitHub issues and discussions
-- Consult the code comments and documentation
+The ontology file (geometry_ontology.owl) was created using Protégé, a standard tool for building ontologies. The ontology was checked for consistency using Protégé's validation tools.
 
----
-
-**Last Updated:** December 2025  
-**Project Status:** Complete (Academic Submission)  
-**Version:** 1.0
-
----
-
-*This Intelligent Tutoring System demonstrates the successful integration of semantic web technologies (OWL ontologies), machine learning principles (adaptive algorithms), and pedagogical design in educational technology.*
+This system shows that you can build a working intelligent tutoring system using semantic web technologies. The separation between the knowledge (in the ontology) and the learning logic (in the Python code) makes it flexible and easy to maintain.
