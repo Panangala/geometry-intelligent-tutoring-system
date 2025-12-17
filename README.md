@@ -43,16 +43,33 @@ Then open a browser and go to http://localhost:5000
 ## Files in This Project
 
 - geometry_ontology.owl - The ontology file containing the geometry knowledge. It has classes for shapes, measurements, properties, formulas, and learning concepts.
+- config.py - Configuration and environment variables (thresholds, difficulty parameters, settings)
 
 - app.py - The main Flask application that runs the web server
 
-- learning_engine.py - The logic for generating problems, evaluating answers, and changing difficulty
+- modules/learning_engine.py - Pedagogical algorithms for problem generation, answer evaluation, and adaptive difficulty
 
-- ontology_handler.py - Handles queries to the ontology using SPARQL
+- modules/ontology_handler.py - Handles queries to the OWL ontology using SPARQL and RDFLib
 
-- templates/ - HTML files for the user interface (home page, lessons, practice, dashboard)
+- modules/__init__.py - Package initialization
+
+- geometry_ontology.owl - The OWL knowledge base containing geometry classes, properties, and formulas
+
+- geometry_owl_dotfile.dot - Ontology visualization in DOT format
+
+- templates/ - HTML templates for the user interface
+  - base.html - Base layout template
+  - index.html - Home page and shape selection
+  - lesson.html - Educational content display
+  - practice.html - Practice problem interface
+  - results.html - Performance dashboard
 
 - static/ - CSS styling and JavaScript files
+  - css/style.css - Responsive design stylesheet
+  - js/script.js - Client-side AJAX and interactions
+  - images/ - Icons and illustrations
+
+- requirements.txt - Python package dependencies (Flask, RDFLib, etc.)
 
 ## The Ontology
 
@@ -167,7 +184,7 @@ The design of this system is based on learning science research:
 
 ## Author
 
-Developed by Isuru Lakindu Panangala Perera as part of an MSc Computer Science program at York St John University, London Campus. Supervisor is Prof. Anil Fernando.
+Developed by Isuru Lakindu Panangala Perera as part of an MSc Computer Science program at York St John University, London Campus.
 
 ## License
 
